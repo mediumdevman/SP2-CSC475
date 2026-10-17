@@ -69,7 +69,7 @@ The user uploads a photo of their surroundings and chooses a playlist length. *W
 | Milestone | Dates | Jackson | Brooklynn | Jaiya | Milestone |
 |---|---|---|---|---|---|
 | 1 | Week of Nov 2nd | (C1) CLIP setup, prompt lists, (C2) EXIF information handler, (C4) hand lablled songs | (C4) Labelling protocol, pick seed songs, CLAP (C5) Embedding | (C3) librosa analyzer, (C6) SQLite schema, | Basic deliverables are working |
-| 2 | Week of Oct 6th | Connect CLIP image scorer to python cmd line and SQLite Databse | Start training model on our hand labbled data set | Connect librosa analyzer to set of hand labbled samples | Basic Interface |
+| 2 | Week of Nov 16th | Connect CLIP image scorer to python cmd line and SQLite Databse | Start training model on our hand labbled data set | Connect librosa analyzer to set of hand labbled samples | Basic Interface |
 | 3 | Final Date TBD | Polish CLIP promtping & user uploads | Continue to train out Model | Refine librosa/Our Model alogrithms | Project in final state, explore Advanced Outcomes (time permitting) |
 
 
