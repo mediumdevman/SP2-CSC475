@@ -1,6 +1,6 @@
 # Weather Report: Context-Aware Playlist Generation from Photos
 
-**Team:** Jackson MacNeil · Brooklyn Nelson · Jaiya Chauhan
+**Team:** Jackson MacNeil · Brooklynn Nelson · Jaiya Chauhan
 | **Design / Requirements Specification**
 
 ---
@@ -37,8 +37,8 @@ The user uploads a photo of their surroundings and chooses a playlist length. *W
 | C1 | CLIP image scorer: photo → Weather Report Scoring System | Jackson |
 | C2 | Context module: EXIF + weather → Additonal Rating Information | Jackson |
 | C3 | librosa feature extractor: audio → adjusted rating scale | Jaiya |
-| C4 | Labelling protocol + tool + hand-labelled seed set (~100 songs) | Brooklyn (tool/protocol); everyone labels |
-| C5 | Song vibe model + CLAP scoring: features → Weather Report | Brooklyn |
+| C4 | Labelling protocol + tool + hand-labelled seed set (~100 songs) | Brooklynn (tool/protocol); everyone labels |
+| C5 | Song vibe model + CLAP scoring: features → Weather Report | Brooklynn |
 | C6 | Song database + playlist assembler: vibe vector + minutes → song list | Jaiya |
 
 ### Expected: complete end-to-end system
@@ -47,7 +47,7 @@ The user uploads a photo of their surroundings and chooses a playlist length. *W
 |---|---|---|
 | E1 | One command: `python weather_report.py photo.jpg --minutes 45` → playlist | Jackson |
 | E2 | Library of 300+ songs analysed and scored in the database | Jaiya |
-| E3 | Baseline comparison of systems A, B, C | Brooklyn |
+| E3 | Baseline comparison of systems A, B, C | Brooklynn |
 | E4 | Local UI interface + `.m3u` export | Jaiya |
 | E5 | Mid-project progress report (README update) | Everyone |
 
@@ -60,13 +60,13 @@ The user uploads a photo of their surroundings and chooses a playlist length. *W
 | A3 | Direct Spotify/Apple Music/Streaming Service API call to generate playlists | Everyone |
 
 
-**Workload balance:** each person owns 2 basic components, 1–2 expected deliverables, and 1 advanced deliverable, and everyone labels songs and writes the paper. Brooklyn's ML experience goes where it matters most: the labelling design and the model.
+**Workload balance:** each person owns 2 basic components, 1–2 expected deliverables, and 1 advanced deliverable, and everyone labels songs and writes the paper. Brooklynn's ML experience goes where it matters most: the labelling design and the model.
 
 ---
 
 ## 3. Timeline (Oct 13 – Nov 30, 2026)
 
-| Milestone | Dates | Jackson | Brooklyn | Jaiya | Milestone |
+| Milestone | Dates | Jackson | Brooklynn | Jaiya | Milestone |
 |---|---|---|---|---|---|
 | 1 | Week of Nov 2nd | (C1) CLIP setup, prompt lists, (C2) EXIF information handler, (C4) hand lablled songs | (C4) Labelling protocol, pick seed songs, CLAP (C5) Embedding | (C3) librosa analyzer, (C6) SQLite schema, | Basic deliverables are working |
 | 2 | Week of Oct 6th | Connect CLIP image scorer to python cmd line and SQLite Databse | Start training model on our hand labbled data set | Connect librosa analyzer to set of hand labbled samples | Basic Interface |
@@ -90,7 +90,7 @@ The user uploads a photo of their surroundings and chooses a playlist length. *W
   * D8 (advanced): compare prompt strategies (single prompt vs prompt ensembles) and 2 CLIP model sizes on accuracy and speed
   * D9 (advanced): run the study with 8–10 participants, test for significant differences between systems, and measure whether context improves ratings
 
-## Brooklyn Nelson
+## Brooklynn Nelson
 
 * **Deliverables**
   * D1 (basic): write a labelling protocol defining rating scale for each dimension, with example songs, share with Jack/Jiaya so they can label a set of songs too. 
