@@ -22,13 +22,15 @@ The user uploads a photo of their surroundings and chooses a playlist length. *W
 - **B.** Our model using librosa features only
 - **C.** Our model using librosa features + CLAP embedding
 
-**Language and tools:** Python 3.11 throughout, using `open_clip`, `laion_clap`, `librosa`, `scikit-learn`, SQLite, Open-Meteo (weather), `Pillow` (EXIF). UI Language/Framework TBD (possibly Gradio)
+**Language and tools:** Python 3.11 throughout, using `open_clip`, `laion_clap`, `librosa`, `scikit-learn`, SQLite, Open-Meteo (weather), `Pillow` (EXIF). UI Language/Framework TBD (possibly Gradio) *The tools and libraries listed here reflect our current plan and may change as the project develops.
 
 ---
 
 ## 2. Deliverables by Tier
 
-**Basic** = every component works on its own. **Expected** = all components connected into a complete but unpolished system. **Advanced** = tested, evaluated, and polished.
+**Basic** = every component works on its own. 
+**Expected** = all components connected into a complete but unpolished system. 
+**Advanced** = tested, evaluated, and polished.
 
 ### Basic: six components, two per person
 
