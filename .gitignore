@@ -1,5 +1,8 @@
 .venv/
 __pycache__/
 .DS_Store
-Song/Pharrell_Williams-Happy.mp3
-Song/Radiohead-How_to_Disappear_Completely.mp3
+*.db
+*.mp3
+*.wav
+*.flac
+*.m4a
