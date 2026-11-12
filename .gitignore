@@ -2,3 +2,7 @@
 __pycache__/
 .DS_Store
 *.db
+*.mp3
+*.wav
+*.flac
+*.m4a
