@@ -20,7 +20,7 @@ prompts = {
         "low": "A slow, mellow and low-energy song.",
         "high": "An energetic, stimulating and fast-paced song."
     },
-    "happy": {
+    "happiness": {
         "low": "A sad and melancholic song.",
         "high": "A happy and cheerful song."
     },
@@ -42,26 +42,29 @@ with torch.no_grad():
 
 #prompts_embed = [energy_embed, happy_embed, warm_embed]
 
-def song_to_vector(audio_path, text_embeds):
+def song_to_vector(audio_path, prompt_embeds=None):
 
-  with torch.no_grad():
-    audio_embed = model.get_audio_embedding_from_filelist([audio_path], use_tensor=True)
-    audio_embed = torch.nn.functional.normalize(audio_embed, dim=-1)
+    if prompt_embeds is None: 
+        prompt_embeds = text_embeds
 
-    vibe_vector = {}
+    with torch.no_grad():
+        audio_embed = model.get_audio_embedding_from_filelist([audio_path], use_tensor=True)
+        audio_embed = torch.nn.functional.normalize(audio_embed, dim=-1)
 
-    for cat in text_embeds:
-      similarities = audio_embed @ text_embeds[cat].T
+        vibe_vector = {}
 
-      # Similarity to low and high prompts
-      low_sim = similarities[0, 0]
-      high_sim = similarities[0, 1]
+        for cat in prompt_embeds:
+            similarities = audio_embed @ prompt_embeds[cat].T
 
-      probabilities = torch.softmax(torch.stack([low_sim, high_sim])*TEMPERATURE, dim=0)
+            # Similarity to low and high prompts
+            low_sim = similarities[0, 0]
+            high_sim = similarities[0, 1]
 
-      vibe_vector[cat] = probabilities[1].item()
+            probabilities = torch.softmax(torch.stack([low_sim, high_sim])*TEMPERATURE, dim=0)
 
-  return vibe_vector
+            vibe_vector[cat] = probabilities[1].item()
+
+    return vibe_vector
 
 if __name__ == "__main__":
   import sys
@@ -74,7 +77,7 @@ if __name__ == "__main__":
   if not path:
       print("No song selected.")
   else:
-      result = song_to_vector(path, text_embeds)
+      result = song_to_vector(path)
 
       print(f"\n{path}")
       for cat, score in result.items():
