@@ -1,5 +1,7 @@
 import torch, open_clip
 from PIL import Image
+from pillow_heif import register_heif_opener
+register_heif_opener()
 
 SCENE_CONTEXT = 0.5
 MAJOR_WEIGHT = 50
@@ -35,6 +37,7 @@ with torch.no_grad():
     energy_f /= energy_f.norm(dim=-1, keepdim=True)
 
 def image_to_vector(path): 
+    # {"warmth", "happiness", "energy", "outdoor"}, each 0–1
     with torch.no_grad():
 
         # create the probabilities
@@ -53,8 +56,9 @@ def image_to_vector(path):
         prob_energy = (MINOR_WEIGHT * img_f @ energy_f.T).softmax(dim=-1)
 
         vibe_vector = {"warmth": prob_temp[0,1].item(), 
-                       "happy": prob_vibe[0,1].item(), 
-                       "energy": prob_energy[0,1].item()}
+                       "happiness": prob_vibe[0,1].item(), 
+                       "energy": prob_energy[0,1].item(),
+                       "outdoor": prob_context[0,1].item()}
     
     return vibe_vector
 
@@ -69,7 +73,7 @@ if __name__ == "__main__":
         root = Tk()
         root.withdraw()
         path = filedialog.askopenfilename(title="Choose a photo",
-                                          filetypes=[("Images", "*.jpg *.jpeg *.png")])
+                                          filetypes=[("Images", "*.jpg *.jpeg *.png *.heic *HEIC")])
         root.destroy()
 
     if not path:

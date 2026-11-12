@@ -6,7 +6,7 @@ How the components talk to each other. If you change a function's inputs or outp
 
 ## Shared conventions
 
-**Vibe vector:** every scorer returns a dict with the same three keys, each a float in `[0, 1]`:
+**Vibe vector:** every scorer returns a dict with the same three keys, each a float in `[0, 1]` (the image scorer also returns `outdoor`, which is removed by the context module before matching):
 
 ```python
 {"warmth": 0.0–1.0, "happiness": 0.0–1.0, "energy": 0.0–1.0}
@@ -33,16 +33,17 @@ How the components talk to each other. If you change a function's inputs or outp
 
 ---
 
-## C1: Image scorer (Jackson, `Image/scorer.py`, exists)
+## C1: Image scorer (Jackson, `Image/image_scorer.py`, exists)
 
 ```python
-image_to_vector(path: str) -> dict   # vibe vector
+image_to_vector(path: str) -> dict
+# {"warmth", "happiness", "energy", "outdoor"}, each 0–1
 ```
 
 - Loads CLIP (ViT-B/32, LAION-2B) once at import.
 - An indoor/outdoor check decides which warmth prompts are used.
-    - For indoor photos, colour based prompts termine the images warmth score. For outdoor photos we used prompts that look top match the weather to the warm of a photo, snow vs. sun, cloud vs. clear, etc.. 
-- **[DECIDE]** The context module needs to know whether the photo is outdoors. Should `image_to_vector` also return the outdoor probability (e.g. as a 4th key `outdoor`, or a second return value)? If it's a key, the playlist builder must ignore it when measuring distance.
+    - For indoor photos, colour-based prompts determine the image's warmth score. For outdoor photos we use prompts that try to match the weather to the warmth of a photo: snow vs. sun, cloud vs. clear, etc.
+- `outdoor` is the outdoor probability. It is stored in the vector for the context module (C2), even though it won't translate to plotting the image in 3D space.
 
 ## C2: Context module (Jackson, not built yet)
 
@@ -51,11 +52,13 @@ get_context(path: str) -> dict
 # {"datetime": datetime | None, "lat": float | None, "lon": float | None,
 #  "temp_c": float | None, "precip_mm": float | None, "cloud_cover": float | None}
 
-apply_context(vector: dict, context: dict, outdoor: float) -> dict   # adjusted vibe vector
+apply_context(vector: dict, context: dict) -> dict
+# returns the 3-axis vibe vector {"warmth", "happiness", "energy"}; "outdoor" is dropped here
 ```
 
 - `get_context` reads EXIF (time + GPS) and calls Open-Meteo. Any value it can't get is `None`, and it never raises.
-- `apply_context` returns the vector unchanged if the context is missing or the photo is indoors.
+- If a photo has no location data stored, we use the CLIP analysis as the final and only score.
+- If a photo does have location data, we use an equation to figure out how the location data changes the score. If it's a cozy, warm inside photo, but location data returns that it is -3 outside, the warmth score will be increased by a multiplier. We use the outdoor probability that is stored in the vector for this.
 - Blend with CLIP's warmth score. Helps where photos that are warm visually can be even warmer if geolocationally we know the exact temperature of the moment.
 
 ## C3: librosa feature extractor (`Librosa/extract_features.py`, exists)
@@ -98,7 +101,7 @@ python weather_report.py photo.jpg --minutes 45
 ```
 
 1. `vector = image_to_vector(photo)`
-2. `context = get_context(photo)`; `vector = apply_context(vector, context, outdoor)`
+2. `context = get_context(photo)`; `vector = apply_context(vector, context)`
 3. `songs = load_library()`
 4. `playlist = build_playlist(vector, minutes, songs)`
 5. `write_m3u(playlist, "playlist.m3u")`, then print the playlist
