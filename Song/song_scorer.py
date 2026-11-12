@@ -17,8 +17,8 @@ with open(os.devnull, "w") as devnull:
 
 prompts = {
     "energy": {
-        "low": "A slow and low-energy song.",
-        "high": "An energetic and upbeat song."
+        "low": "A slow, mellow and low-energy song.",
+        "high": "An energetic, stimulating and fast-paced song."
     },
     "happy": {
         "low": "A sad and melancholic song.",
