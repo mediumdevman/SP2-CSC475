@@ -1,0 +1,39 @@
+% ----------------------------------------------------------------
+% Individual status report -- Jackson MacNeil
+% Components: C1 (CLIP image scorer), C2 (context module)
+% ----------------------------------------------------------------
+\subsection{Jackson MacNeil}\label{sec:status_jackson}
+
+\begin{table}[h]
+\centering\footnotesize
+\begin{tabular}{@{}llp{0.5\columnwidth}l@{}}
+\toprule
+ID & Tier & Performance indicator & Status \\
+\midrule
+D1 & Basic    & Run CLIP locally; photo--prompt similarity & \stDone \\
+D2 & Basic    & Prompt sets per axis; 0--1 vector per photo & \stDone \\
+D3 & Basic    & Shared interfaces between components & \stPart \\
+D4 & Basic    & Stub pipeline end to end on fake data & \stNone \\
+D5 & Expected & 30--50 photo test set; correlation with team ratings & \stPart \\
+D6 & Expected & Weather/time context (EXIF + Open-Meteo) & \stPart \\
+D7 & Expected & Single command: photo + length $\rightarrow$ playlist & \stNone \\
+D8 & Advanced & Compare prompt strategies and CLIP model sizes & \stPart \\
+D9 & Advanced & Listening study, 8--10 participants & \stNone \\
+\bottomrule
+\end{tabular}
+\caption{Jackson MacNeil -- performance indicators.}
+\label{tab:pi_jackson}
+\end{table}
+
+D1 and D2 are complete: \texttt{Image/scorer.py} exposes
+\texttt{image\_to\_vector(path)}, which returns the three-axis vector using the
+pairwise scoring and indoor/outdoor routing of \secref{sec:clip}. The design
+moved from six dimensions to three after single-softmax experiments showed
+that several of the original dimensions were opposite ends of the same axis
+(e.g., energy and calmness). D5 is under way with six development photos; the indoor/outdoor classifier (part of D6) is working,
+while EXIF and weather lookup are next. D8 is partly covered by the prompt
+comparison in \tabref{tab:warmth}. Remaining work: formalise the interfaces
+(D3), build the stub pipeline (D4), finish the photo test set and correlation
+(D5), add EXIF/weather context (D6), and connect everything into one
+command (D7).
+\todo{Jackson: update statuses and wording before submission.}

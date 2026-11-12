@@ -1,0 +1,32 @@
+% ----------------------------------------------------------------
+% Individual status report -- Brooklynn Nelson
+% Components: C4 (labelling protocol/tool/seed set), C5 (song model + CLAP)
+% Fill in the Status column (\stDone, \stPart, \stNone) and the paragraph.
+% ----------------------------------------------------------------
+\subsection{Brooklynn Nelson}\label{sec:status_brooklynn}
+
+\begin{table}[h]
+\centering\footnotesize
+\begin{tabular}{@{}llp{0.5\columnwidth}l@{}}
+\toprule
+ID & Tier & Performance indicator & Status \\
+\midrule
+D1 & Basic    & Labelling protocol with rating scale and example songs & \todo{} \\
+D2 & Basic    & Labelling tool that plays a clip and saves ratings & \todo{} \\
+D3 & Basic    & CLAP zero-shot scores and embeddings for every song & \todo{} \\
+D5 & Expected & $\sim$100-song seed set; coordinate labelling by all 3 & \todo{} \\
+D6 & Expected & Model ratings vs.\ group ratings & \todo{} \\
+D7 & Expected & Compare Systems A, B and C & \todo{} \\
+D8 & Expected & Compare ridge, random forest, MLP; feature importance & \todo{} \\
+D9 & Advanced & Train on a large dataset; compare with LLark & \todo{} \\
+\bottomrule
+\end{tabular}
+\caption{Brooklynn Nelson -- performance indicators.}
+\label{tab:pi_brooklynn}
+\end{table}
+
+\todo{Brooklynn: describe progress in your own words. Current repo state:
+\texttt{Song/song\_scorer.py} computes CLAP zero-shot scores on the three axes
+(scale 20, adjusted energy prompt); \texttt{Song/labeled\_test\_songs.csv}
+holds the first eight MTG-Jamendo tracks labelled Low/Mid/High on energy,
+happiness and warmth. Add what is done, what is left, and what you learned.}

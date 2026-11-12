@@ -1,0 +1,34 @@
+% ----------------------------------------------------------------
+% Individual status report -- Jaiya Chauhan
+% Components: C3 (librosa feature extractor), C6 (database + playlist assembler)
+% Fill in the Status column (\stDone, \stPart, \stNone) and the paragraph.
+% ----------------------------------------------------------------
+\subsection{Jaiya Chauhan}\label{sec:status_jaiya}
+
+\begin{table}[h]
+\centering\footnotesize
+\begin{tabular}{@{}llp{0.5\columnwidth}l@{}}
+\toprule
+ID & Tier & Performance indicator & Status \\
+\midrule
+D1 & Basic    & librosa: tempo, loudness, key/mode, spectral, MFCCs, duration & \todo{} \\
+D2 & Basic    & SQLite schema; store features for the seed set & \todo{} \\
+D3 & Basic    & Rank songs by similarity to the photo vector & \todo{} \\
+D4 & Basic    & Fit total length within $\pm$3 min; \texttt{.m3u} export & \todo{} \\
+D5 & Expected & Validate tempo vs.\ hand-tapped BPM on 20 songs & \todo{} \\
+D6 & Expected & Process a 300+ song library & \todo{} \\
+D7 & Expected & UI for photo upload, length and playlist display & \todo{} \\
+D8 & Expected & Playlist flow (no repeat artists, smooth energy) & \todo{} \\
+D9 & Advanced & Deploy a web app; streaming export if possible & \todo{} \\
+\bottomrule
+\end{tabular}
+\caption{Jaiya Chauhan -- performance indicators.}
+\label{tab:pi_jaiya}
+\end{table}
+
+\todo{Jaiya: describe progress in your own words. Current repo state:
+\texttt{Librosa/extract\_features.py} extracts tempo, loudness, onset rate,
+spectral centroid, low-mid power share, spectral flatness and mode/mode
+strength into \texttt{features.csv}; \texttt{Database/schema.sql} and
+\texttt{db.py} define the shared SQLite database (still using the original six
+dimensions). Add what is done, what is left, and what you learned.}
