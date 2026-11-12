@@ -2,7 +2,6 @@ from PIL import Image, ExifTags
 from pillow_heif import register_heif_opener
 from datetime import datetime
 import requests
-from image_scorer import image_to_vector 
 register_heif_opener()
 
 # in C
@@ -138,11 +137,4 @@ def apply_context(vector, context):
 
     return final_vector
 
-if __name__ == "__main__":
-    photos = ["test4.jpg", "test5.jpeg"]
-
-    for photo in photos:
-        context = get_context(photo)
-        vector = image_to_vector(photo)
-        print(apply_context(vector, context))
         
