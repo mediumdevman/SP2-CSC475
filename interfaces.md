@@ -50,7 +50,7 @@ image_to_vector(path: str) -> dict
 ```python
 get_context(path: str) -> dict
 # {"datetime": datetime | None, "lat": float | None, "lon": float | None,
-#  "temp_c": float | None, "precip_mm": float | None, "cloud_cover": float | None}
+#  "temp": float | None, "percip": float | None, "clouds": float | None}
 
 apply_context(vector: dict, context: dict) -> dict
 # returns the 3-axis vibe vector {"warmth", "happiness", "energy"}; "outdoor" is dropped here
