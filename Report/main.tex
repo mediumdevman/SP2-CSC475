@@ -237,13 +237,17 @@ correlation minus the best minor correlation, so positive values lean major.
 \subsection{CLAP Scoring and Song Model (C4, C5)}\label{sec:clap}
 
 CLAP~\cite{wu2023laionclap} scores songs zero-shot with the same pairwise
-prompt scoring as the image side, using audio prompts such as ``a sad and
+prompt scoring structure as the image side, using prompts such as ``a sad and
 melancholic song'' vs.\ ``a happy and cheerful song'' (scale 20). This is our
-untrained baseline (System~A). Systems~B and~C will regress human labels from
-librosa features alone and from librosa features plus the 512-dimensional CLAP
-embedding (reduced with PCA), using ridge regression, random forests and a
-small MLP. Labels are collected on MTG-Jamendo tracks, whose mood/theme tags
-serve as a sanity check. \todo{Brooklynn: labelling protocol, scale (currently
+untrained baseline (System~A) which will be tested using hand labelled songs. 
+Systems~B and~C will be trained, with the labelled songs, to perform regression 
+analysis from librosa features alone, and from librosa features plus the 512-dimensional CLAP
+embedding, using ridge regression and random forests. Labels are collected on MTG-Jamendo tracks, whose mood/theme tags
+serve as a sanity check. The songs are scored on a scale of Low, Mid, 
+and High for each vibe category corresponding to its presence in the song. 
+A label of Mid indicates that the perceived score in that category is around 0.5,
+while Low and High correspond to scores around 0 and 1, respectively. 
+\todo{Brooklynn: labelling protocol, scale (currently
 Low/Mid/High), number of songs labelled, rater agreement.}
 
 \subsection{Database and Playlist Assembly (C6)}\label{sec:db}
