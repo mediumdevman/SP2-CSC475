@@ -245,15 +245,14 @@ CLAP~\cite{wu2023laionclap} scores songs zero-shot with the same pairwise
 prompt scoring structure as the image side, using prompts such as ``a sad and
 melancholic song'' vs.\ ``a happy and cheerful song'' (scale 20). This is our
 untrained baseline (System~A) which will be tested using hand labelled songs. 
-Systems~B and~C will be trained, with the labelled songs, to perform regression 
+Systems~B and~C will be trained with the labelled songs to perform regression 
 analysis from librosa features alone, and from librosa features plus the 512-dimensional CLAP
 embedding, using ridge regression and random forests. Labels are collected on MTG-Jamendo tracks, whose mood/theme tags
 serve as a sanity check. The songs are scored on a scale of Low, Mid, 
 and High for each vibe category corresponding to its presence in the song. 
 A label of Mid indicates that the perceived score in that category is around 0.5,
 while Low and High correspond to scores around 0 and 1, respectively. 
-\todo{Brooklynn: labelling protocol, scale (currently
-Low/Mid/High), number of songs labelled, rater agreement.}
+
 
 \subsection{Database and Playlist Assembly (C6)}\label{sec:db}
 
@@ -362,9 +361,22 @@ Mode / strength $m$    & major / 0.03 & major / 0.28 \\
 \label{tab:audio}
 \end{table}
 
-\todo{Brooklynn: CLAP zero-shot results on the labelled MTG-Jamendo songs
-(e.g., agreement between CLAP Low/Mid/High and our labels).}
 
+\subsection{CLAP Zero-Shot Results On Songs}
+
+\tabref{tab:happy_scores} shows the CLAP scores for \emph{Happy} by Pharrell Williams 
+at different scales and \tabref{tab:disappear_scores} shows the scores for 
+\emph{How to Disappear Completely}. These songs were chosen for initial testing to 
+determine the neccesary scaling because they are very different in terms of our vibe 
+categories. The CLAP model was able to correctly identify these differences and labelled
+\emph{Happy} as a highly energetic, happy, and warm song, while 
+\emph{How to Disappear Completely} was labelled as a very low energy and low happiness song.
+The model was also able to identify that even though the lyrics of 
+\emph{How to Disappear Completely} are sad, the melody is still soft and warm. 
+Using the two songs to test the different scales, we found that the scale of 50 caused them 
+to be scored too extremely towards the songs respetive end of each vibe spectrum. 
+The difference between a scale of 10 and 20 is minimal but 20 was chosen because it is 
+better able to highlight the vibes of the songs without being too extreme.
 
 \begin{table}[ht]
 \centering
@@ -378,7 +390,7 @@ Scale & Energy & Happiness & Warmth \\
 10 & 0.89 & 0.71 & 0.49 \\
 \bottomrule
 \end{tabular}
-\caption{CLAP scores for ``Happy'' at different scales.}
+\caption{CLAP scores for \emph{Happy} at different scales.}
 \label{tab:happy_scores}
 \end{table}
 
@@ -394,7 +406,7 @@ Scale & Energy & Happy & Warmth \\
 10 & 0.21 & 0.07 & 0.77 \\
 \bottomrule
 \end{tabular}
-\caption{CLAP scores for ``How to Disappear Completely'' at different scales.}
+\caption{CLAP scores for \emph{How to Disappear Completely} at different scales.}
 \label{tab:disappear_scores}
 \end{table}
 
@@ -467,11 +479,10 @@ Spotify restrictions forced us to own the whole audio-analysis pipeline.
 We used Claude (Anthropic), an AI assistant, in preparing this report. It
 produced the TikZ code for the pipeline diagram (\figref{fig:pipeline}), set up
 the ISMIR \LaTeX{} template and helped with formatting the report. It was also used 
-as a tutor and coding assistant while developing the image scorer, librosa extractor, and SQL database. Finally it helped draft MD 
+as a tutor and coding assistant while developing the image scorer, CLAP zero-shot scorer, librosa extractor, and SQL database. Finally it helped draft MD 
 files to save time so the team can focus on coding, helped organize our git branches so we 
 did not lose our progress. All system design decisions, experiments, 
 and reported results are the authors' own.
-\todo{Brooklynn: add any AI tools you used for your components.}
 
 % -----------------------------------------------------------------
 \bibliography{references}

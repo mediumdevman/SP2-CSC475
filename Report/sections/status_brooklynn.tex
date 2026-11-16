@@ -11,22 +11,30 @@
 \toprule
 ID & Tier & Performance indicator & Status \\
 \midrule
-D1 & Basic    & Labelling protocol with rating scale and example songs & \todo{} \\
-D2 & Basic    & Labelling tool that plays a clip and saves ratings & \todo{} \\
-D3 & Basic    & CLAP zero-shot scores and embeddings for every song & \todo{} \\
-D5 & Expected & $\sim$100-song seed set; coordinate labelling by all 3 & \todo{} \\
-D6 & Expected & Model ratings vs.\ group ratings & \todo{} \\
-D7 & Expected & Compare Systems A, B and C & \todo{} \\
-D8 & Expected & Compare ridge, random forest, MLP; feature importance & \todo{} \\
-D9 & Advanced & Train on a large dataset; compare with LLark & \todo{} \\
+D1 & Basic    & Labelling protocol with rating scale and example songs & Done \\
+D2 & Basic    & Labelling tool that plays a clip and saves ratings & Partial \\
+D3 & Basic    & CLAP zero-shot scores and embeddings for every song & Partial \\
+D5 & Expected & $\sim$100-song seed set; coordinate labelling by all 3 & Partial \\
+D6 & Expected & Model ratings vs.\ group ratings & Not started \\
+D7 & Expected & Compare Systems A, B and C & Not started \\
+D8 & Expected & Compare ridge, random forest; feature importance & Not started \\
+D9 & Advanced & Train on a large dataset; compare with LLark & Not started \\
 \bottomrule
 \end{tabular}
 \caption{Brooklynn Nelson -- performance indicators.}
 \label{tab:pi_brooklynn}
 \end{table}
 
-\todo{Brooklynn: describe progress in your own words. Current repo state:
-\texttt{Song/song\_scorer.py} computes CLAP zero-shot scores on the three axes
-(scale 20, adjusted energy prompt); \texttt{Song/labeled\_test\_songs.csv}
-holds the first eight MTG-Jamendo tracks labelled Low/Mid/High on energy,
-happiness and warmth. Add what is done, what is left, and what you learned.}
+
+\texttt{Song/song\_scorer.py} computes CLAP zero-shot scores on the three axes based on a 
+high and low similarity prompt for each axis. The model is showing strong results,
+however, it scores songs based on a randomly chosen 10 second window which can cause 
+the scores to be inconsitent with the overall vibe of the song depending on the window chosen. 
+The next step will be to adjust the method to use the entire song to compute the scores 
+as well as test the songs on a pretrianed checkpoint made for music instead of the 
+current default checkpoint. Using the mood/theme subset of the MTG\_Jamendo dataset, test 
+songs are being selected using the mood/theme labels to ensure there will be a variety 
+of songs, and the first eight songs have been labelled Low/Mid/High on energy, 
+happiness and warmth. Beyond the CLAP scoring, next steps will be to build a model
+that uses the librosa features, and one that also uses the CLAP embeddings to compute scores.
+
