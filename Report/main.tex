@@ -113,8 +113,7 @@ librosa based feature extractor~\cite{mcfee2015librosa} follows classic content-
 MIR~\cite{tzanetakis2002genre}, with beat tracking based on dynamic
 programming~\cite{ellis2007beat}. Key and mode are estimated by
 correlating chroma with the Krumhansl--Kessler key
-profiles~\cite{krumhansl1990cognitive}, and harmonic/percussive separation by
-median filtering~\cite{fitzgerald2010hpss} provides a drum-energy feature.
+profiles~\cite{krumhansl1990cognitive}.
 
 \textbf{Joint embeddings of media and text:}
 CLIP~\cite{radford2021clip} uses zero-shot classification with text prompts to rate images.
@@ -262,8 +261,8 @@ A shared SQLite schema stores songs, audio features, CLAP embeddings, human
 ratings (with a consensus view), model scores per system and generated
 playlists. The schema was designed for the original six dimensions
 and will be migrated to the three axes. Next, librosa features will be mapped
-to warmth, happiness and energy scores. Given a photo's vector and a target length, the assembler ranks
-songs by Euclidean distance between the photo and song vectors and adds the
+to warmth, happiness and energy scores. Given a photo's vector and a target length, the assembler will rank
+songs by Euclidean distance between the photo and song vectors and will add the
 closest songs until the total length is within 3 minutes of the target. Combining CLAP embeddings with librosa
 features is an advanced goal.
 
@@ -343,7 +342,6 @@ Tunebat (also algorithmic) reported 107\,BPM, whereas a hand-tapped estimate
 and the Hooktheory transcription both give 80\,BPM. The ratio of about 4/3
 is a metrical-level error that a simple octave fold cannot correct, so tempo
 will be one of several energy cues rather than the main one.
-\todo{Jaiya: full 20-song tempo validation table (D5).}
 
 \begin{table}[t]
 \centering\footnotesize

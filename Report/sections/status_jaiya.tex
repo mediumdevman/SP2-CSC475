@@ -18,24 +18,26 @@ D4  & Basic    & Feature extraction run on example songs, exported to CSV & \stD
 \midrule
 D5  & Expected & Mode and mode strength  & \stDone \\
 D6  & Expected & Validate tempo vs.\ hand-tapped BPM on 20 songs & \stPart \\
-D7  & Expected & Add duration and MFCCs; load features into the database & \stNone \\
-D8  & Expected & Migrate schema from six to three axes & \stNone \\
-D9  & Expected & Warmth/happiness/energy scores from librosa features & \stNone \\
-D10 & Expected & Playlist from those scores: rank by distance, fit length within $\pm$3 min, \texttt{.m3u} export & \stNone \\
-D11 & Expected & Process a 300+ song library & \stNone \\
+D7  & Expected & Populate database & \stPart \\
+D8  & Expected & Warmth/happiness/energy scores from librosa features & \stPart \\
+D9 & Expected & Playlist from those scores: rank by distance, fit length within $\pm$3 min, \texttt{.m3u} export & \stNone \\
 \midrule
-D12 & Advanced & Combine CLAP embeddings with librosa features for scoring & \stNone \\
-D13 & Advanced & Playlist flow (no repeat artists, smooth energy changes) & \stNone \\
-D14 & Advanced & UI or web app for photo upload and playlist display & \stNone \\
+D10 & Advanced & Process a 300+ song library & \stNone \\
+D11 & Advanced & Combine CLAP embeddings with librosa features for scoring & \stNone \\
+D12 & Advanced & Playlist flow (no repeat artists, smooth energy changes) & \stNone \\
+D13 & Advanced & UI or web app for photo upload and playlist display & \stNone \\
 \bottomrule
 \end{tabular}
 \caption{Jaiya Chauhan -- performance indicators.}
 \label{tab:pi_jaiya}
 \end{table}
 
-\todo{Jaiya: describe progress in your own words. Current repo state:
-\texttt{Librosa/extract\_features.py} extracts tempo, loudness, onset rate,
-spectral centroid, low-mid power share, spectral flatness and mode/mode
-strength into \texttt{features.csv}; \texttt{Database/schema.sql} and
-\texttt{db.py} define the shared SQLite database (still using the original six
-dimensions). Add what is done, what is left, and what you learned.}
+D1--D5 are complete. \texttt{Librosa/extract\_features.py} extracts tempo,
+loudness, onset rate, spectral centroid, low-mid power share, spectral
+flatness and mode/mode strength into \texttt{features.csv};
+\texttt{Database/schema.sql} and \texttt{db.py} define the shared SQLite
+database. D6 is partial: on \emph{Superpowers}, librosa
+estimated about 107\,BPM against a hand-tapped 80\,BPM, which showed that
+tempo alone is an unreliable energy cue. Next steps include creating warmth/happiness/energy
+scores from the librosa features, populating the database, and creating a
+playlist based on those scores.
