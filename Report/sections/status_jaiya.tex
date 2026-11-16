@@ -11,15 +11,22 @@
 \toprule
 ID & Tier & Performance indicator & Status \\
 \midrule
-D1 & Basic    & librosa: tempo, loudness, key/mode, spectral, MFCCs, duration & \todo{} \\
-D2 & Basic    & SQLite schema; store features for the seed set & \todo{} \\
-D3 & Basic    & Rank songs by similarity to the photo vector & \todo{} \\
-D4 & Basic    & Fit total length within $\pm$3 min; \texttt{.m3u} export & \todo{} \\
-D5 & Expected & Validate tempo vs.\ hand-tapped BPM on 20 songs & \todo{} \\
-D6 & Expected & Process a 300+ song library & \todo{} \\
-D7 & Expected & UI for photo upload, length and playlist display & \todo{} \\
-D8 & Expected & Playlist flow (no repeat artists, smooth energy) & \todo{} \\
-D9 & Advanced & Deploy a web app; streaming export if possible & \todo{} \\
+D1  & Basic    & librosa energy features: tempo, loudness, onset rate & \stDone \\
+D2  & Basic    & librosa warmth features: spectral centroid, 100--800\,Hz power share, flatness & \stDone \\
+D3  & Basic    & Shared SQLite schema (songs, features, embeddings, ratings, scores, playlists) & \stDone \\
+D4  & Basic    & Feature extraction run on example songs, exported to CSV & \stDone \\
+\midrule
+D5  & Expected & Mode and mode strength  & \stDone \\
+D6  & Expected & Validate tempo vs.\ hand-tapped BPM on 20 songs & \stPart \\
+D7  & Expected & Add duration and MFCCs; load features into the database & \stNone \\
+D8  & Expected & Migrate schema from six to three axes & \stNone \\
+D9  & Expected & Warmth/happiness/energy scores from librosa features & \stNone \\
+D10 & Expected & Playlist from those scores: rank by distance, fit length within $\pm$3 min, \texttt{.m3u} export & \stNone \\
+D11 & Expected & Process a 300+ song library & \stNone \\
+\midrule
+D12 & Advanced & Combine CLAP embeddings with librosa features for scoring & \stNone \\
+D13 & Advanced & Playlist flow (no repeat artists, smooth energy changes) & \stNone \\
+D14 & Advanced & UI or web app for photo upload and playlist display & \stNone \\
 \bottomrule
 \end{tabular}
 \caption{Jaiya Chauhan -- performance indicators.}
