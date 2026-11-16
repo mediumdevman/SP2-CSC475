@@ -23,6 +23,7 @@
 \usepackage{graphicx}
 \usepackage{color}
 \usepackage{booktabs}
+\usepackage{float}   % lets tables use [H] to stay exactly where they are in the code
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta,fit}
 
@@ -56,26 +57,26 @@
 % -----------------------------------------------------------------
 \begin{abstract}
 We present the current state of \emph{Weather Report}, an application that takes a
-photo of a user's surroundings and generates a playlist that matches the vibe of the enviroment in the photo. 
+photo of a user's surroundings and generates a playlist that matches the vibe of the environment in the photo. 
 Photos and songs are plotted onto a 3D graph, where each axis of the graph is a scalar from 
 our scoring method called a \emph{Vibe Vector}. A \emph{Vibe Vector} is made of three qualities:  
 \emph{warmth}, \emph{happiness} and \emph{energy}. The user uploaded image is run through a zero-shot model of CLIP, 
 which assigns a score to each value of the \emph{Vibe Vector}. Music samples have their tempo,
 loudness, onset rate, spectral and key/mode features extracted using librosa.
-CLAP, a zero-shot song scorer, scores each sample from MTG-Jamendo to train a lightweight model. 
+CLAP, a zero-shot song scorer, is used as our baseline for training our model on samples from MTG-Jamendo. 
 This report describes the design, changes in our system, planning and execution, and current results 
-from our working build. We will also breifly discuss how we plan to develop the system over the next few weeks, 
+from our working build. We will also briefly discuss how we plan to develop the system over the next few weeks, 
 and any plans we have for future development as well. 
 \end{abstract}
 
 % -----------------------------------------------------------------
 \section{Introduction}\label{sec:intro}
 
-Most streaming platforms use alogirthms based on listening habits to create tailored playlists
-for their users. However, no platform recommends songs to the user based on their current location
-and surrounding enivorment. \emph{Weather Report} aims to fill this gap. The user uploads a photo,
-a desired playlist length, and the system returns a playlist. The playlist matches the vibe of the users 
-enviroment by analyzing the photo and comparing against real world, such as the weather, when the data is 
+Most streaming platforms use algorithms based on listening habits to create tailored playlists
+for their users. However, most platforms do not take into account the user's current location
+and surrounding environment. \emph{Weather Report} aims to fill this gap. The user uploads a photo,
+a desired playlist length, and the system returns a playlist. The playlist matches the vibe of the user's 
+environment by analyzing the photo and comparing against real world, such as the weather, when the data is 
 available. 
 
 The core design decision is that \textbf{images and songs are described on the
@@ -86,8 +87,8 @@ dimensions to three axes, each scored from 0 to 1:
 Happiness and energy correspond to the valence and arousal axes of Russell's
 circumplex model~\cite{russell1980circumplex}. Warmth is our own
 addition to the model. This idea came from listening to cozy music in a warm room when it is
-particularily cold outside. Thats why, when available, real weather data adds context to the scene. Playlist
-generation then becomes a nearest-neighbour search, where the main contraint is playlist duration.
+particularly cold outside. That's why, when available, real weather data adds context to the scene. Playlist
+generation then becomes a nearest-neighbour search, where the main constraint is playlist duration.
 
 We also revised two major scope decisions. First, we do not train an LLark-scale
 model~\cite{gardner2024llark}; instead, ``our own model'' is a lightweight model
@@ -96,17 +97,17 @@ embeddings~\cite{elizalde2023clap,wu2023laionclap} for reference. Second, Spotif
 provides audio features, recommendations or preview clips to new developer
 applications, so we analyse audio we can legally obtain (personal files,
 FMA~\cite{defferrard2017fma} and MTG-Jamendo~\cite{bogdanov2019jamendo}) and
-treat streaming export as a advanced goal.
+treat streaming export as an advanced goal.
 
 % -----------------------------------------------------------------
 \section{Related Work}\label{sec:related}
 
 \textbf{Music emotion recognition:}
 Most music emotion recognition (MER) models emotion in the
-valence--arousal plane~\cite{russell1980circumplex}, we have substiuted this for a  
+valence--arousal plane~\cite{russell1980circumplex}, in our model we use a  
 happiness--energy plane. Studies show that perceived emotion is linked to musical features like 
 tempo, mode, loudness and timbre~\cite{kim2010mer,panda2023features}, and DEAM,
-a databse for the emotional analysis of music, provides continuous
+a database for the emotional analysis of music, provides continuous
 valence/arousal annotations for benchmarking~\cite{aljanaki2017deam}. Our
 librosa based feature extractor~\cite{mcfee2015librosa} follows classic content-based 
 MIR~\cite{tzanetakis2002genre}, with beat tracking based on dynamic
@@ -116,12 +117,20 @@ profiles~\cite{krumhansl1990cognitive}, and harmonic/percussive separation by
 median filtering~\cite{fitzgerald2010hpss} provides a drum-energy feature.
 
 \textbf{Joint embeddings of media and text:}
-CLIP~\cite{radford2021clip} uses zero-shot classification with text prompts to rate the images.
-During development we noticed that the prompt wording strongly affects accuracy, and finding consitentent
-wording to accurately assess the subjective features of a photo proved difficult to develop. We also use the
-geolocational data stored in the HEIC/JPG files to modify the warmth score. 
-LLark~\cite{gardner2024llark} connects music encoders to a large language
-model; it is out of scope for us but inspired the project.
+CLIP~\cite{radford2021clip} uses zero-shot classification with text prompts to rate images.
+It was trained on a 400 million image data set, where its goal is to pair an image with the probability 
+that it is the inputted text prompt. The images and text end up in the same space so CLIP can classify an image 
+as ``zero-shot'': the image is compared against a set of written prompts, 
+and the closest prompt wins. It was noted in CLIP's development that 
+the wording of the input prompts greatly changes the models accuracy. It was 
+also noted that averaging the probabilities of many prompts helped in 
+increasing CLIP's accuracy. The same contrastive idea has been applied
+to audio: CLAP~\cite{elizalde2023clap,wu2023laionclap} pairs sound with text
+descriptions, and MuLan~\cite{huang2022mulan} pairs music recordings with
+free-text annotations, which makes zero-shot scoring of songs possible in the
+same way. LLark~\cite{gardner2024llark} goes further and connects music
+encoders to a large language model; it is out of scope for us but inspired the
+project.
 
 \textbf{Image--music matching and context:}
 The closest prior work maps images and music into valence--arousal space and
@@ -202,10 +211,10 @@ as \texttt{python weather\_report.py photo.jpg --minutes 45}.
 
 We use CLIP (ViT-B/32, LAION-2B weights) zero-shot model to score our photos. 
 The photo and each text prompt are embedded and compared. Each value for the vector
-is determinted by a pair of opposing prompts, for example:\ ``a photo of a sad, lonely
+is determined by a pair of opposing prompts, for example:\ ``a photo of a sad, lonely
 moment'' vs.\ ``a photo of a happy, joyful moment''. The vector's score is the
-softmax probability of the positive prompt, so something that is returns 97\% warm and 3\% cold 
-is stored as \{warmth: 0.97\} We score each pair separately, this enables our analysis to be more nuacned. A photo can be both
+softmax probability of the positive prompt, so something that returns 97\% happy and 3\% sad 
+is stored as \{happiness: 0.97\}. We score each pair separately, this enables our analysis to be more nuanced. A photo can be both
 happy \emph{and} calm.
 
 Warmth proved hardest (\secref{sec:results}). Prompts about colour
@@ -214,7 +223,8 @@ were unable to judge indoor scenes. To get around this issue we first determine
 if the photo is indoor or outdoor based on another CLIP text prompt. Outdoor photos are scored with weather
 prompts (``cloudy, rainy day'' vs.\ ``clear, sunny day'') and indoor photos are scored with
 colour/coziness prompts (``cold and stark, with blue and grey colours'' vs.\
-``warm and cozy, with soft colours and light'').
+``warm and cozy, with soft colours and light''). Warmth is further adjusted using the photo’s time, 
+location and weather; this context module is described in Section 5.1.
 
 \subsection{Audio Features (C3)}\label{sec:librosa}
 
@@ -253,42 +263,68 @@ from six to three axes.}
 
 % -----------------------------------------------------------------
 \section{Preliminary Results}\label{sec:results}
-
 \subsection{Image Scorer}
 
-\todo{Jackson: image scorer results table on the photo test set (D5), with a
-short discussion. Development-photo observations so far: the foggy forest
-scores low on all three axes, the party and pub score high on happiness and
-energy, the overcast harbour lands near the middle, and the night-time backyard
-party is the one borderline indoor/outdoor case.}
+\textbf{Prompt iteration for warmth.} \tabref{tab:warmth} shows how the
+warmth axis changes from sample to sample. Colour prompts called the sunny beach cold (0.21);
+``cozy'' prompts favoured indoor scenes, but made outdoor photos return colder.
+Light-only prompts (``dark and gloomy'' vs.\ ``bright and clear'') rated every
+photo except the fog above 0.8. Our solution was to average the scores of the two prompts, and
+weather prompts plus indoor/outdoor scores gave the scores closest to hand labelling.
 
-\textbf{Prompt iteration for warmth.} \tabref{tab:warmth} summarises how the
-warmth axis evolved. Colour prompts called the sunny beach cold (0.21);
-``cozy'' prompts favoured indoor scenes and pushed every outdoor photo cold;
-light-only prompts (``dark and gloomy'' vs.\ ``bright and clear'') rated every
-photo except the fog above 0.8. Averaging the scores of two prompt pairs widened the spread, and
-weather prompts plus indoor/outdoor routing gave the ordering closest to our
-judgement. Earlier, single-word prompts (``warm'', ``sad'') and prompts mixing
-axes (``happy, chill or relaxed'') produced confounded scores.
+\begin{table}[!htb]
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lccccc@{}}
+  \toprule
+  Warmth prompt pair & Beach & Party & Pub & Harb. & Fog \\
+  \midrule
+  Colour (blue/grey vs.\ golden) & 0.21 & 0.80 & 0.54 & 0.58 & 0.01 \\
+  Stark vs.\ cozy/comforting     & 0.26 & 0.35 & 0.46 & 0.24 & 0.20 \\
+  Dark/gloomy vs.\ bright/clear  & 0.92 & 0.92 & 0.81 & 0.87 & 0.12 \\
+  Mean of colour + feeling       & 0.34 & 0.71 & 0.49 & 0.50 & 0.10 \\
+  Cloudy/rainy vs.\ clear/sunny  & 0.93 & 0.78 & 0.50 & 0.65 & 0.08 \\
+  Indoor/outdoor routed (final) & 0.93 & 0.78 & 0.64 & 0.65 & 0.08 \\
+  \bottomrule
+  \end{tabular}
+  \caption{Warmth scores for different prompt designs.}
+  \label{tab:warmth}
+  \end{table}
 
-\begin{table}[t]
-\centering\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}lccccc@{}}
-\toprule
-Warmth prompt pair & Beach & Party & Pub & Harb. & Fog \\
-\midrule
-Colour (blue/grey vs.\ golden) & 0.21 & 0.80 & 0.54 & 0.58 & 0.01 \\
-Stark vs.\ cozy/comforting     & 0.26 & 0.35 & 0.46 & 0.24 & 0.20 \\
-Dark/gloomy vs.\ bright/clear  & 0.92 & 0.92 & 0.81 & 0.87 & 0.12 \\
-Mean of colour + feeling       & 0.34 & 0.71 & 0.49 & 0.50 & 0.10 \\
-Cloudy/rainy vs.\ clear/sunny  & 0.93 & 0.78 & 0.50 & 0.65 & 0.08 \\
-Indoor/outdoor routed (final) & 0.93 & 0.78 & 0.64 & 0.65 & 0.08 \\
-\bottomrule
-\end{tabular}
-\caption{Warmth scores for different prompt designs.}
-\label{tab:warmth}
+  \textbf{Further development of image scoring.}
+  We realized early on that the warmth factor was the most subjective, so we needed
+  to develop a way to reinforce and ``validate'' the score. We created a Python module called
+  \texttt{context.py}. \texttt{context.py} analyzes the GPS and time data stored in JPG and HEIC files.
+  It uses an API call to gather the temperature, precipitation, and cloud cover at the moment the photo
+  was taken. The temperature then nudges CLIP's warmth score: for outdoor photos it is blended in at 25\%,
+  and for indoor photos a colder day makes the scene warmer. We can see in \tabref{tab:d5} that after adding
+  the context module, our warmth scores increase the rank correlation with our labels from 0.52 to 0.60.
+  Notably \emph{Energy} is the axis that best matches our hand labels ($\rho = 0.79$; 18/30 exact).
+  \emph{Happiness} gets a ``worse'' exact score than the baseline, but that is because we labelled most
+  photos (20/30) medium happy. CLIP also rates neutral scenes as sad, which is something we are looking
+  to refine in the future. These results come from a single rater on 30 photos.
+
+\begin{table}[!htb]
+  \centering\footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{@{}lcccc@{}}
+  \toprule
+  Axis & Exact & $\pm$0.05 & Spearman & Baseline \\
+  \midrule
+  Warmth (CLIP only)       & 14/30 & 17/30 & 0.52 & 12/30 \\
+  Warmth (CLIP + weather)  & 14/30 & 18/30 & 0.60 & 12/30 \\
+  Happiness                & 18/30 & 21/30 & 0.66 & 20/30 \\
+  Energy                   & 18/30 & 21/30 & 0.79 & 15/30 \\
+  \bottomrule
+  \end{tabular}
+  \caption{Image scorer vs.\ hand labels on 30 photos. \emph{Exact}: bin matches
+  the label; $\pm$0.05: match allowing a 0.05 margin at bin edges; 
+  \emph{Spearman}: rank correlation between labels and raw scores; 
+  \emph{Baseline}: always predicting the
+  most common label.}
+  \label{tab:d5}
 \end{table}
+
 
 \subsection{Audio Features and Tempo Validation}
 

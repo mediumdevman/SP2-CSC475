@@ -33,11 +33,11 @@ def get_context(path):
 
     # get time data
     taken   = exif_info.get(ExifTags.Base.DateTimeOriginal) 
-    if taken != None: 
-        taken_formatted = datetime.strptime(taken, "%Y:%m:%d %H:%M:%S")
+    try: 
+        taken_formatted = datetime.strptime(taken.strip(), "%Y:%m:%d %H:%M:%S")
         for_request = taken_formatted.strftime("%Y-%m-%d")
         hour = taken_formatted.hour
-    else: 
+    except(AttributeError, ValueError): 
         taken_formatted = for_request = hour = None
     
     # get location data
