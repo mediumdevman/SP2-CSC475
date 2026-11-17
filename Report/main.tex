@@ -195,13 +195,7 @@ in that shared space.}
 All code is written in Python~3.11 using \texttt{open\_clip}, \texttt{laion\_clap},
 \texttt{librosa}, \texttt{scikit-learn} and SQLite. Components communicate
 through a shared output format: a dictionary with keys \emph{warmth},
-\emph{happiness} and \emph{energy}, which is a float $[0,1]$. The image scorer
-(\texttt{image\_to\_vector}) and the CLAP scorer (\texttt{song\_to\_vector})
-already return this format; the librosa extractor (\texttt{extract\_features})
-returns raw features that the song model maps to a \emph{vibe vector} for comparison. The image scorer additionally returns
-\texttt{outdoor}, the probability that the photo was taken outside; it is used
-only by the context module and is removed before matching. The pipeline is run
-as \texttt{python weather\_report.py photo.jpg --minutes 45}.
+\emph{happiness} and \emph{energy}, which is a float $[0,1]$.
 
 % -----------------------------------------------------------------
 \section{Methods}\label{sec:methods}
@@ -367,14 +361,14 @@ Mode / strength $m$    & major / 0.03 & major / 0.28 \\
 \tabref{tab:happy_scores} shows the CLAP scores for \emph{Happy} by Pharrell Williams 
 at different scales and \tabref{tab:disappear_scores} shows the scores for 
 \emph{How to Disappear Completely}. These songs were chosen for initial testing to 
-determine the neccesary scaling because they are very different in terms of our vibe 
+determine the necessary scaling because they are very different in terms of our vibe 
 categories. The CLAP model was able to correctly identify these differences and labelled
 \emph{Happy} as a highly energetic, happy, and warm song, while 
 \emph{How to Disappear Completely} was labelled as a very low energy and low happiness song.
 The model was also able to identify that even though the lyrics of 
 \emph{How to Disappear Completely} are sad, the melody is still soft and warm. 
 Using the two songs to test the different scales, we found that the scale of 50 caused them 
-to be scored too extremely towards the songs respetive end of each vibe spectrum. 
+to be scored too extremely towards the songs respective end of each vibe spectrum. 
 The difference between a scale of 10 and 20 is minimal but 20 was chosen because it is 
 better able to highlight the vibes of the songs without being too extreme.
 
@@ -424,39 +418,28 @@ Status: \stDone{} = complete; \stPart{} = started, not complete;
 % -----------------------------------------------------------------
 \section{Revised Timeline and Final Goals}\label{sec:plan}
 
-The original timeline assumed six dimensions and a single labelling pass; both
-changed. \tabref{tab:timeline} gives the revised plan.
-\todo{All: confirm dates against the course deadline.}
-
-\begin{table}[t]
-\centering\footnotesize
-\begin{tabular}{@{}lp{0.72\columnwidth}@{}}
-\toprule
-Week & Milestone \\
-\midrule
-Nov 16 & Shared interfaces + stub pipeline; DB migrated to 3 axes; ~100 seed songs labelled by all three members \\
-Nov 23 & End-to-end CLI; train Systems B/C; photo test set rated; EXIF + weather context \\
-Nov 30 & A/B/C comparison; playlist assembler on 300+ songs; simple UI; \texttt{.m3u} export \\
-Final  & Evaluation, listening test (if time), final paper \\
-\bottomrule
-\end{tabular}
-\caption{Revised timeline.}
-\label{tab:timeline}
-\end{table}
+By Sunday, November 22-25, we will finish labelling, migrate and populate
+the database, and connect the song scores to the pipeline. The playlist builder
+and trained models follow before the final deadline, which is still to be
+confirmed by the instructor.
 
 \textbf{Basic (deliverable even with delays):} a command-line tool that takes
 a photo and returns a ranked list of songs from a library of at least 100
 tracks, using the CLIP image scorer and CLAP zero-shot song scores.
+\emph{Target: Sunday, November 22-25th.}
 
 \textbf{Expected:} the full pipeline in one command
 (\texttt{python weather\_report.py photo.jpg --minutes 45}) with weather/time
-context, a trained song model, a 300+ song library, duration-matched
-\texttt{.m3u} output and a simple UI; evaluation of Systems A/B/C against held-out
-human labels and of the image scorer against team ratings of a photo test set.
+context, a trained song model and duration-matched \texttt{.m3u} output;
+evaluation of Systems A/B/C against held-out human labels and of the image
+scorer against team ratings of a photo test set.
+\emph{Target: final deadline (TBD by the instructor).}
 
-\textbf{Advanced:} a blind listening test comparing our playlists with
-zero-shot and random baselines; a hosted web version; direct playlist export to
-a streaming service if API access allows.
+\textbf{Advanced:} a 300+ song library; CLAP embeddings combined with librosa
+features; playlist flow (no repeat artists, smooth energy changes); a simple UI
+or hosted web version; a blind listening test comparing our playlists with
+zero-shot and random baselines; direct playlist export to a streaming service
+if API access allows. \emph{Target: as time allows.}
 
 % -----------------------------------------------------------------
 \section{Lessons Learned}\label{sec:lessons}
