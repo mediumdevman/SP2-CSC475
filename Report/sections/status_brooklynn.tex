@@ -29,9 +29,9 @@ D9 & Advanced & Train on a large dataset; compare with LLark & Not started \\
 \texttt{Song/song\_scorer.py} computes CLAP zero-shot scores on the three axes based on a 
 high and low similarity prompt for each axis. The model is showing strong results,
 however, it scores songs based on a randomly chosen 10 second window which can cause 
-the scores to be inconsitent with the overall vibe of the song depending on the window chosen. 
+the scores to be inconsistent with the overall vibe of the song depending on the window chosen. 
 The next step will be to adjust the method to use the entire song to compute the scores 
-as well as test the songs on a pretrianed checkpoint made for music instead of the 
+as well as test the songs on a pretrained checkpoint made for music instead of the 
 current default checkpoint. Using the mood/theme subset of the MTG\_Jamendo dataset, test 
 songs are being selected using the mood/theme labels to ensure there will be a variety 
 of songs, and the first eight songs have been labelled Low/Mid/High on energy, 
